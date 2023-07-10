@@ -10,12 +10,16 @@ class Video:
 
     def __init__(self, video_id):
         self.video_id = video_id
-        self.video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                                    id=video_id).execute()
-        self.video_title = self.video_response['items'][0]['snippet']['title']
-        self.link_to_video = "https://www.youtube.com/channel/" + self.video_id
-        self.number_of_views = self.video_response['items'][0]['statistics']['viewCount']
-        self.number_of_likes = self.video_response['items'][0]['statistics']['likeCount']
+        try:
+            self.video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                                        id=video_id).execute()
+            self.video_title = self.video_response['items'][0]['snippet']['title']
+            self.link_to_video = "https://www.youtube.com/channel/" + self.video_id
+            self.number_of_views = self.video_response['items'][0]['statistics']['viewCount']
+            self.number_of_likes = self.video_response['items'][0]['statistics']['likeCount']
+        except Exception:
+            self.video_response, self.video_title, self.link_to_video, self.number_of_views, \
+            self.number_of_likes = None, None, None, None, None
 
     def __str__(self):
         return f"{self.video_title}"
